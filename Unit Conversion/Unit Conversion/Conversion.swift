@@ -36,11 +36,11 @@ class Conversion {
         
         result.append(ConversionStep(magnitude: magnitude, numeratorName: initialNumerator.name, denominatorName: initialDenominator.name, temp: "1"))
         
-//        if (initialNumerator.name != resultNumerator.name + "aaaa") {
+        if (initialNumerator.name != resultNumerator.name + "aaaa") {
             if (initialNumerator.coefficient != 1 && resultNumerator.coefficient != 1) {
                 result.append(ConversionStep(magnitude: magnitude * initialNumerator.coefficient, numeratorName: initialNumerator.baseUnitName, denominatorName: initialDenominator.name, temp: "2"))
             }
-//        }
+        }
         
         let initNumeratorMeasurement = Measurement.init(value: Double(magnitude), unit: initialNumerator.type)
         let resultNumeratorMeasurement = initNumeratorMeasurement.converted(to: resultNumerator.type)
@@ -51,11 +51,11 @@ class Conversion {
         
         result.append(ConversionStep(magnitude: Float(resultNumeratorMeasurement.value), numeratorName: resultNumerator.name, denominatorName: initialDenominator.name, temp: "3"))
         
-//        if (initialDenominator.name != resultDenominator.name + "test") {
+        if (initialDenominator.name != resultDenominator.name + "test") {
             if (initialDenominator.coefficient != 1 && resultDenominator.coefficient != 1) {
                 result.append(ConversionStep(magnitude: Float(resultNumeratorMeasurement.value) / initialDenominator.coefficient, numeratorName: resultNumerator.name, denominatorName: initialDenominator.baseUnitName, temp: "4"))
             }
-//        }
+        }
 
         result.append(ConversionStep(magnitude: Float(resultValue.value), numeratorName: resultNumerator.name, denominatorName: resultDenominator.name, temp: "5"))
 
