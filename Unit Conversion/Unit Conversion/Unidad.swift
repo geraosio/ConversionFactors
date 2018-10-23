@@ -9,10 +9,15 @@
 import UIKit
 
 class Unidad: NSObject {
+    
+    // MARK: - Properties
+    
     var type : Dimension
     var name : String
     var coefficient : Float
     var baseUnitName : String
+    
+    // MARK: - Initializers
     
     init (type : Dimension, name : String, coefficient : Float, baseUnitName : String) {
         self.type = type

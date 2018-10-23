@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // MARK: - Properties
 
     var initNumberator: Unidad?
     var initDenominator: Unidad?
@@ -29,8 +31,98 @@ class ViewController: UIViewController {
     var massList = [Unidad]()
     var volumeList = [Unidad]()
     
+    // MARK: - View Controller
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Initialize the unit's lists
+        loadUnitLists()
+    }
+    
+    // MARK: - Actions
+
+    @IBAction func convertButtonClicked(_ sender: Any) {
+        if let input = Float(inputTextField.text!),
+            let iNumerator = initNumberator,
+            let iDenominator = initDenominator,
+            let rNumerator = resultNumberator,
+            let rDenominator =  resultDenominator  {
+            
+            let results = Conversion.sharedManager.convert(magnitude: input, initialNumerator: iNumerator, initialDenominator: iDenominator, resultNumerator: rNumerator, resultDenominator: rDenominator)
+            
+            var message = ""
+            for step in results {
+                message = message + step.asString() + "\n"
+            }
+            
+            let alertController = UIAlertController.init(title: "Result", message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func initNumberatorClicked(_ sender: Any) {
+        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
+        
+        for unit in lengthList {
+            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
+                self.initNumberator = unit
+                self.initNumberatorButton.setTitle(unit.name, for: .normal)
+            }
+            alertController.addAction(action)
+        }
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func initDenominatorClicked(_ sender: Any) {
+        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
+        
+        for unit in durationList {
+            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
+                self.initDenominator = unit
+                self.initDenominatorButton.setTitle(unit.name, for: .normal)
+            }
+            alertController.addAction(action)
+        }
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func resultNumberatorClicked(_ sender: Any) {
+        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
+        
+        for unit in lengthList {
+            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
+                self.resultNumberator = unit
+                self.resultNumberatorButton.setTitle(unit.name, for: .normal)
+            }
+            alertController.addAction(action)
+        }
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func resultDenominatorClicked(_ sender: Any) {
+        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
+        
+        for unit in durationList {
+            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
+                self.resultDenominator = unit
+                self.resultDenominatorButton.setTitle(unit.name, for: .normal)
+            }
+            alertController.addAction(action)
+        }
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func loadUnitLists() {
+
         lengthList = [ Unidad(type: UnitLength.meters, name: "meters", coefficient: 1, baseUnitName: "meters"),
                        Unidad(type: UnitLength.kilometers, name: "kilometers", coefficient: 1000, baseUnitName: "meters"),
                        Unidad(type: UnitLength.centimeters, name: "centimeter", coefficient: 0.01, baseUnitName: "meters"),
@@ -52,7 +144,7 @@ class ViewController: UIViewController {
         durationList = [ Unidad(type: UnitDuration.seconds, name: "seconds", coefficient: 1, baseUnitName: "seconds"),
                          Unidad(type: UnitDuration.minutes, name: "minutes", coefficient: 60, baseUnitName: "seconds"),
                          Unidad(type: UnitDuration.hours, name: "hours", coefficient: 3600, baseUnitName: "seconds")]
-
+        
         massList = [Unidad(type: UnitMass.kilograms, name: "kilograms", coefficient: 1, baseUnitName: "kilograms"),
                     Unidad(type: UnitMass.grams, name: "grams", coefficient: 0.001, baseUnitName: "kilograms"),
                     Unidad(type: UnitMass.centigrams, name: "centimeters", coefficient: 0.00001, baseUnitName: "kilograms"),
@@ -69,69 +161,6 @@ class ViewController: UIViewController {
                       Unidad(type: UnitVolume.cubicMillimeters, name: "cubic milimeters", coefficient: 0.000001, baseUnitName: "liters"),
                       Unidad(type: UnitVolume.cubicInches, name: "cubic inches", coefficient: 0.0163871, baseUnitName: "liters"),
                       Unidad(type: UnitVolume.cubicFeet, name: "cubic feet", coefficient: 28.3168, baseUnitName: "liters")]
-    }
-
-    @IBAction func convertButtonClicked(_ sender: Any) {
-        if let input = Float(inputTextField.text!), let iNumerator = initNumberator, let iDenominator = initDenominator, let  rNumerator = resultNumberator, let rDenominator =  resultDenominator  {
-            let results = Conversion.sharedManager.convert(magnitude: input, initialNumerator: iNumerator, initialDenominator: iDenominator, resultNumerator: rNumerator, resultDenominator: rDenominator)
-            
-            var message = ""
-            for step in results {
-                message = message + step.asString() + "\n"
-            }
-            let alertController = UIAlertController.init(title: "Result", message: message, preferredStyle: .alert)
-            let okAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    @IBAction func initNumberatorClicked(_ sender: Any) {
-        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
-        for unit in lengthList {
-            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
-                self.initNumberator = unit
-                self.initNumberatorButton.setTitle(unit.name, for: .normal)
-            }
-            alertController.addAction(action)
-        }
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func initDenominatorClicked(_ sender: Any) {
-        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
-        for unit in durationList {
-            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
-                self.initDenominator = unit
-                self.initDenominatorButton.setTitle(unit.name, for: .normal)
-            }
-            alertController.addAction(action)
-        }
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func resultNumberatorClicked(_ sender: Any) {
-        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
-        for unit in lengthList {
-            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
-                self.resultNumberator = unit
-                self.resultNumberatorButton.setTitle(unit.name, for: .normal)
-            }
-            alertController.addAction(action)
-        }
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func resultDenominatorClicked(_ sender: Any) {
-        let alertController = UIAlertController.init(title: "Select a unit", message: nil, preferredStyle: .actionSheet)
-        for unit in durationList {
-            let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
-                self.resultDenominator = unit
-                self.resultDenominatorButton.setTitle(unit.name, for: .normal)
-            }
-            alertController.addAction(action)
-        }
-        self.present(alertController, animated: true, completion: nil)
     }
     
 }

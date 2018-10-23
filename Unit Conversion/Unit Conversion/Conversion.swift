@@ -6,7 +6,6 @@
 //  Copyright © 2018 Administrator. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 //extension Double {
@@ -28,6 +27,7 @@ class Conversion {
         struct Static {
             static let instance: Conversion = Conversion()
         }
+        
         return Static.instance
     }
     
