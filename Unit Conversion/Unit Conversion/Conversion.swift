@@ -44,7 +44,10 @@ class Conversion {
         
         let initNumeratorMeasurement = Measurement.init(value: Double(magnitude), unit: initialNumerator.type)
         let resultNumeratorMeasurement = initNumeratorMeasurement.converted(to: resultNumerator.type)
-        let resultValue = resultNumeratorMeasurement
+        
+        let initDenominatorMeasurement = Measurement.init(value: 1, unit: resultDenominator.type)
+        let resultDenominatorMeasurement = initDenominatorMeasurement.converted(to: initialDenominator.type)
+        let resultValue = resultNumeratorMeasurement * resultDenominatorMeasurement.value
         
         result.append(ConversionStep(magnitude: Float(resultNumeratorMeasurement.value), numeratorName: resultNumerator.name, denominatorName: initialDenominator.name, temp: "3"))
         
