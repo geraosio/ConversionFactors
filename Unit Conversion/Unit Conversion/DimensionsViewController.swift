@@ -25,7 +25,7 @@ class DimensionsViewController: UIViewController {
         
         buttonsCollectionView.dataSource = self
         
-        dimensions = ["Area", "Distancia", "Peso", "Tiempo", "Velocidad", "Volumen"]
+        dimensions = ["area", "distancia", "peso", "tiempo", "velocidad", "volumen"]
     }
     
     override func viewWillLayoutSubviews() {
@@ -40,7 +40,6 @@ class DimensionsViewController: UIViewController {
     
     // MARK: - Navigation
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let conversionView = segue.destination as? ViewController else {
             fatalError("Could not cast UIViewController to ViewController")
@@ -50,7 +49,14 @@ class DimensionsViewController: UIViewController {
             fatalError("Could not cast Any to DimensionCollectionViewCell")
         }
         
-        conversionView.selectedDimension = tappedCell.dimension.text
+        conversionView.selectedDimension = tappedCell.dimension.text?.lowercased()
+        
+        switch tappedCell.dimension.text {
+        case "Velocidad":
+            conversionView.requiresCompoundUnit = true
+        default:
+            conversionView.requiresCompoundUnit = false
+        }
     }
     
     // MARK: - Private Methods
@@ -72,8 +78,8 @@ extension DimensionsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DimensionCollectionViewCell
         
-        cell.dimension.text = dimensions[indexPath.row]
-        cell.layer.cornerRadius = 10.0
+        cell.dimension.text = dimensions[indexPath.row].capitalized
+        cell.layer.cornerRadius = 16.0
         
         return cell
     }
