@@ -31,6 +31,8 @@ class ViewController: UIViewController {
     var massList = [Unidad]()
     var volumeList = [Unidad]()
     
+    var selectedDimension: String!
+    
     // MARK: - View Controller
     
     override func viewDidLoad() {

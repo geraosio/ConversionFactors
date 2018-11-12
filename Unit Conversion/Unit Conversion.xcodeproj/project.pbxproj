@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2B29DB65217E4CC900624CD4 /* ConversionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B29DB64217E4CC900624CD4 /* ConversionStep.swift */; };
 		2BEA051E2177B5140058CA50 /* Unidad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA051D2177B5140058CA50 /* Unidad.swift */; };
+		741EED772194A72300ADB069 /* DimensionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EED762194A72300ADB069 /* DimensionsViewController.swift */; };
+		741EED812194D33F00ADB069 /* DimensionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EED802194D33F00ADB069 /* DimensionCollectionViewCell.swift */; };
 		C30344FE21613F3200B3A22E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30344FD21613F3200B3A22E /* AppDelegate.swift */; };
 		C303450021613F3200B3A22E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30344FF21613F3200B3A22E /* ViewController.swift */; };
 		C303450321613F3200B3A22E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C303450121613F3200B3A22E /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 /* Begin PBXFileReference section */
 		2B29DB64217E4CC900624CD4 /* ConversionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionStep.swift; sourceTree = "<group>"; };
 		2BEA051D2177B5140058CA50 /* Unidad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unidad.swift; sourceTree = "<group>"; };
+		741EED762194A72300ADB069 /* DimensionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimensionsViewController.swift; sourceTree = "<group>"; };
+		741EED802194D33F00ADB069 /* DimensionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimensionCollectionViewCell.swift; sourceTree = "<group>"; };
 		C30344FA21613F3200B3A22E /* Unit Conversion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Unit Conversion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C30344FD21613F3200B3A22E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C30344FF21613F3200B3A22E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 				2B29DB64217E4CC900624CD4 /* ConversionStep.swift */,
 				2BEA051D2177B5140058CA50 /* Unidad.swift */,
 				C30344FD21613F3200B3A22E /* AppDelegate.swift */,
+				741EED762194A72300ADB069 /* DimensionsViewController.swift */,
+				741EED802194D33F00ADB069 /* DimensionCollectionViewCell.swift */,
 				C30344FF21613F3200B3A22E /* ViewController.swift */,
 				C303450121613F3200B3A22E /* Main.storyboard */,
 				C303450421613F3500B3A22E /* Assets.xcassets */,
@@ -145,9 +151,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BEA051E2177B5140058CA50 /* Unidad.swift in Sources */,
+				741EED772194A72300ADB069 /* DimensionsViewController.swift in Sources */,
 				2B29DB65217E4CC900624CD4 /* ConversionStep.swift in Sources */,
 				C30345102161404100B3A22E /* Conversion.swift in Sources */,
 				C303450021613F3200B3A22E /* ViewController.swift in Sources */,
+				741EED812194D33F00ADB069 /* DimensionCollectionViewCell.swift in Sources */,
 				C30344FE21613F3200B3A22E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
