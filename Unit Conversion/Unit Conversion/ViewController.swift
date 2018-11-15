@@ -8,7 +8,6 @@
 
 // TODO: - TODO -
 // TODO: Add Scroll View to move content up when displaying keyboard hides content in smaller screens
-// TODO: Update "Deployment Information", support more iOS versions
 // TODO: OPTIONAL Make custom transition from DimensionSelection to UnitSelection
 // TODO: -
 
@@ -27,10 +26,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var selectOriginUnitDenominatorButton: UIButton!
     @IBOutlet weak var selectDestinationUnitButton: UIButton!
     @IBOutlet weak var selectDestinationUnitDenominatorButton: UIButton!
+    @IBOutlet weak var finishEnteringValueButton: UIButton!
     @IBOutlet weak var convertButton: UIButton!
     // Text Fields
     @IBOutlet weak var valueTextField: UITextField!
-    @IBOutlet weak var finishEnteringValueButton: UIButton!
+    // Scroll View
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var selectedDimension: String!
     var requiresCompoundUnit: Bool!
@@ -42,6 +43,8 @@ class ViewController: UIViewController {
     var selectedOriginUnitDenominator: Unidad?
     var selectedDestinationUnit: Unidad?
     var selectedDestinationUnitDenominator: Unidad?
+    // Conversion Steps
+    var results = [ConversionStep]()
     
     // MARK: - View Life Cycle
     
@@ -61,6 +64,13 @@ class ViewController: UIViewController {
         if requiresCompoundUnit {
             complementaryUnitList = getUnitListFor("tiempo")
         }
+        
+        // Move content up if keyboard hides content
+        registerForKeyboardNotification()
+        
+        // Dismiss keyboard when tapping outside of it
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
         
         // Setup the view's elements
         setupViewElements()
@@ -173,55 +183,44 @@ class ViewController: UIViewController {
     }
     
     @IBAction func finishEnteringValue(_ sender: Any) {
-        
-        // Remove keyboard
-        valueTextField.resignFirstResponder()
-        
-        // Enable convert button and change color background
-        convertButton.isEnabled = true
-        convertButton.backgroundColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
-    }
-    
-    @IBAction func showConversion(_ sender: Any) {
-        
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
-        
-        if let inputValue = Float(valueTextField.text!),
-           let originUnit = selectedOriginUnit,
-           let destinationUnit = selectedDestinationUnit {
-            
-            var results = [ConversionStep]()
-            
-            if let originUnitDenominator = selectedOriginUnitDenominator,
-                let destinationUnitDenominator = selectedDestinationUnitDenominator {
-                print("\(originUnitDenominator.baseUnitName) & \(destinationUnitDenominator.baseUnitName)")
-                results = Conversion.sharedManager.convert(magnitude: inputValue, initialNumerator: originUnit, initialDenominator: originUnitDenominator, resultNumerator: destinationUnit, resultDenominator: destinationUnitDenominator)
-            } else {
-                results = Conversion.sharedManager.convert(magnitude: inputValue, initialNumerator: originUnit, initialDenominator: destinationUnit, resultNumerator: destinationUnit, resultDenominator: destinationUnit)
-            }
-            
-            var message = ""
-            for step in results {
-                message = message + step.asString() + "\n"
-            }
-            
-            alertController.title = "Resultado"
-            alertController.message = message
-        } else {
-            alertController.title = "Falto ingresar un dato"
-            alertController.message = "Para obtener un resultado asegurate de haber seleccionado la unidad origen, la unidad destino e ingresado un valor"
-        }
-
-        let okAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
-        alertController.addAction(okAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+        self.dismissKeyboard()
     }
     
     // MARK: - Navigation
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "showSteps" {
+            if let inputValue = Float(valueTextField.text!),
+                let originUnit = selectedOriginUnit,
+                let destinationUnit = selectedDestinationUnit {
+                
+                results = Conversion.sharedManager.convert(magnitude: inputValue, initialNumerator: originUnit, initialDenominator: selectedOriginUnitDenominator, resultNumerator: destinationUnit, resultDenominator: selectedDestinationUnitDenominator)
+            } else {
+                let alertController = UIAlertController(title: "Falto ingresar un dato", message: "Para obtener un resultado asegurate de haber seleccionado la unidad origen, la unidad destino e ingresado un valor.", preferredStyle: .alert)
+                
+                let okAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(okAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+                return false
+            }
+        }
+        
+        return true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Code
+        if let stepView = segue.destination as? StepsViewController {
+            stepView.results = results
+            stepView.titleLabelText = "Conversión"
+            
+            if let originUnitDenominatorName = selectedOriginUnitDenominator?.name,
+                let destinationUnitDenominatorName = selectedDestinationUnitDenominator?.name {
+                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "")/\(originUnitDenominatorName) a \(selectedDestinationUnit?.name ?? "")/\(destinationUnitDenominatorName)"
+            } else {
+                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "") a \(selectedDestinationUnit?.name ?? "")"
+            }
+        }
     }
     
     // MARK: - Private Methods
@@ -230,6 +229,34 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut, animations: {
             label.alpha = 0.0
         })
+    }
+    
+    @objc private func dismissKeyboard() {
+        // Make view or embedded subviews to resign first responder and return to background
+        self.view.endEditing(true)
+    }
+    
+    private func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWasShown(notification: NSNotification) {
+        
+        // Get the keyboard size from the info dictionary of the notification
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardInfo: NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
+        let keyboardSize: CGSize = keyboardInfo.cgRectValue.size
+        
+        // Adjust the bottom content inset of the scroll view by the height of the keyboard
+        let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
     }
     
     private func setupViewElements() {
@@ -268,44 +295,44 @@ class ViewController: UIViewController {
     private func getUnitListFor(_ unitListName: String) -> [Unidad] {
         
         // Initialize lists
-        let areaList = [ Unidad(type: UnitArea.squareMeters, name: "m\u{00B2}", coefficient: 1, baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareKilometers, name: "km\u{00B2}", coefficient: 1000000,baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareCentimeters, name: "cm\u{00B2}", coefficient: 0.0001, baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareMillimeters, name: "mm\u{00B2}", coefficient: 0.000001, baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareInches, name: "in\u{00B2}", coefficient: 0.00064516, baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareFeet, name: "ft\u{00B2}", coefficient: 0.092903, baseUnitName: "square meters"),
-                         Unidad(type: UnitArea.squareYards, name: "yd\u{00B2}", coefficient: 0.836127, baseUnitName: "square meters")]
+        let areaList = [ Unidad(type: UnitArea.squareMeters, name: "m\u{00B2}", coefficient: 1, baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareKilometers, name: "km\u{00B2}", coefficient: 1000000,baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareCentimeters, name: "cm\u{00B2}", coefficient: 0.0001, baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareMillimeters, name: "mm\u{00B2}", coefficient: 0.000001, baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareInches, name: "in\u{00B2}", coefficient: 0.00064516, baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareFeet, name: "ft\u{00B2}", coefficient: 0.092903, baseUnitName: "m\u{00B2}"),
+                         Unidad(type: UnitArea.squareYards, name: "yd\u{00B2}", coefficient: 0.836127, baseUnitName: "m\u{00B2}")]
         
-        let lengthList = [ Unidad(type: UnitLength.meters, name: "m", coefficient: 1, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.kilometers, name: "km", coefficient: 1000, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.centimeters, name: "cm", coefficient: 0.01, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.millimeters, name: "mm", coefficient: 0.001, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.inches, name: "in", coefficient: 0.0254, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.feet, name: "ft", coefficient: 0.3048, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.yards, name: "yd", coefficient: 0.9144, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.miles, name: "mi", coefficient: 1609.34, baseUnitName: "meters"),
-                       Unidad(type: UnitLength.lightyears, name: "ly", coefficient: 9461000000000000, baseUnitName: "meters")]
+        let lengthList = [ Unidad(type: UnitLength.meters, name: "m", coefficient: 1, baseUnitName: "m"),
+                       Unidad(type: UnitLength.kilometers, name: "km", coefficient: 1000, baseUnitName: "m"),
+                       Unidad(type: UnitLength.centimeters, name: "cm", coefficient: 0.01, baseUnitName: "m"),
+                       Unidad(type: UnitLength.millimeters, name: "mm", coefficient: 0.001, baseUnitName: "m"),
+                       Unidad(type: UnitLength.inches, name: "in", coefficient: 0.0254, baseUnitName: "m"),
+                       Unidad(type: UnitLength.feet, name: "ft", coefficient: 0.3048, baseUnitName: "m"),
+                       Unidad(type: UnitLength.yards, name: "yd", coefficient: 0.9144, baseUnitName: "m"),
+                       Unidad(type: UnitLength.miles, name: "mi", coefficient: 1609.34, baseUnitName: "m"),
+                       Unidad(type: UnitLength.lightyears, name: "ly", coefficient: 9461000000000000, baseUnitName: "m")]
         
-        let timeList = [ Unidad(type: UnitDuration.seconds, name: "s", coefficient: 1, baseUnitName: "seconds"),
-                         Unidad(type: UnitDuration.minutes, name: "min", coefficient: 60, baseUnitName: "seconds"),
-                         Unidad(type: UnitDuration.hours, name: "hr", coefficient: 3600, baseUnitName: "seconds")]
+        let timeList = [ Unidad(type: UnitDuration.seconds, name: "s", coefficient: 1, baseUnitName: "s"),
+                         Unidad(type: UnitDuration.minutes, name: "min", coefficient: 60, baseUnitName: "s"),
+                         Unidad(type: UnitDuration.hours, name: "hr", coefficient: 3600, baseUnitName: "s")]
         
-        let volumeList = [Unidad(type: UnitVolume.liters, name: "L", coefficient: 1, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.deciliters, name: "dL", coefficient: 0.1, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.centiliters, name: "cL", coefficient: 0.01, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.milliliters, name: "mL", coefficient: 0.001, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.cubicKilometers, name: "km\u{00B3}", coefficient: 1000000000000, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.cubicMeters, name: "m\u{00B3}", coefficient: 1000, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.cubicMillimeters, name: "mm\u{00B3}", coefficient: 0.000001, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.cubicInches, name: "in\u{00B3}", coefficient: 0.0163871, baseUnitName: "liters"),
-                          Unidad(type: UnitVolume.cubicFeet, name: "ft\u{00B3}", coefficient: 28.3168, baseUnitName: "liters")]
+        let volumeList = [Unidad(type: UnitVolume.liters, name: "L", coefficient: 1, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.deciliters, name: "dL", coefficient: 0.1, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.centiliters, name: "cL", coefficient: 0.01, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.milliliters, name: "mL", coefficient: 0.001, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.cubicKilometers, name: "km\u{00B3}", coefficient: 1000000000000, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.cubicMeters, name: "m\u{00B3}", coefficient: 1000, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.cubicMillimeters, name: "mm\u{00B3}", coefficient: 0.000001, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.cubicInches, name: "in\u{00B3}", coefficient: 0.0163871, baseUnitName: "L"),
+                          Unidad(type: UnitVolume.cubicFeet, name: "ft\u{00B3}", coefficient: 28.3168, baseUnitName: "L")]
         
-        let weightList = [Unidad(type: UnitMass.kilograms, name: "kg", coefficient: 1, baseUnitName: "kilograms"),
-                    Unidad(type: UnitMass.grams, name: "g", coefficient: 0.001, baseUnitName: "kilograms"),
-                    Unidad(type: UnitMass.centigrams, name: "cg", coefficient: 0.00001, baseUnitName: "kilograms"),
-                    Unidad(type: UnitMass.milligrams, name: "mg", coefficient: 0.000001, baseUnitName: "kilograms"),
-                    Unidad(type: UnitMass.ounces, name: "oz", coefficient: 0.0283495, baseUnitName: "kilograms"),
-                    Unidad(type: UnitMass.pounds, name: "lb", coefficient: 0.453592, baseUnitName: "kilograms")]
+        let weightList = [Unidad(type: UnitMass.kilograms, name: "kg", coefficient: 1, baseUnitName: "kg"),
+                    Unidad(type: UnitMass.grams, name: "g", coefficient: 0.001, baseUnitName: "kg"),
+                    Unidad(type: UnitMass.centigrams, name: "cg", coefficient: 0.00001, baseUnitName: "kg"),
+                    Unidad(type: UnitMass.milligrams, name: "mg", coefficient: 0.000001, baseUnitName: "kg"),
+                    Unidad(type: UnitMass.ounces, name: "oz", coefficient: 0.0283495, baseUnitName: "kg"),
+                    Unidad(type: UnitMass.pounds, name: "lb", coefficient: 0.453592, baseUnitName: "kg")]
         
         switch unitListName {
         case "area":
@@ -338,9 +365,11 @@ extension ViewController: UITextFieldDelegate {
             self.finishEnteringValueButton.alpha = 1.0
         }) { (isCompleted) in
         }
+        
+        // Enable convert button and change color background
+        convertButton.isEnabled = true
+        convertButton.backgroundColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     }
-    
-    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
@@ -353,4 +382,3 @@ extension ViewController: UITextFieldDelegate {
         }
     }
 }
-

@@ -11,6 +11,7 @@
 		2BEA051E2177B5140058CA50 /* Unidad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA051D2177B5140058CA50 /* Unidad.swift */; };
 		741EED772194A72300ADB069 /* DimensionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EED762194A72300ADB069 /* DimensionsViewController.swift */; };
 		741EED812194D33F00ADB069 /* DimensionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EED802194D33F00ADB069 /* DimensionCollectionViewCell.swift */; };
+		7446F8B921A48D850086AC30 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7446F8B821A48D850086AC30 /* FloatExtension.swift */; };
 		744AD573219DB5CD00B6B239 /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744AD572219DB5CD00B6B239 /* StepsViewController.swift */; };
 		744AD575219DD2C100B6B239 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744AD574219DD2C100B6B239 /* Step.swift */; };
 		744AD579219DD2F800B6B239 /* Step.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744AD578219DD2F800B6B239 /* Step.xib */; };
@@ -27,6 +28,7 @@
 		2BEA051D2177B5140058CA50 /* Unidad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unidad.swift; sourceTree = "<group>"; };
 		741EED762194A72300ADB069 /* DimensionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimensionsViewController.swift; sourceTree = "<group>"; };
 		741EED802194D33F00ADB069 /* DimensionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimensionCollectionViewCell.swift; sourceTree = "<group>"; };
+		7446F8B821A48D850086AC30 /* FloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
 		744AD572219DB5CD00B6B239 /* StepsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		744AD574219DD2C100B6B239 /* Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step.swift; sourceTree = "<group>"; };
 		744AD578219DD2F800B6B239 /* Step.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Step.xib; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			children = (
 				C303450F2161404100B3A22E /* Conversion.swift */,
 				2B29DB64217E4CC900624CD4 /* ConversionStep.swift */,
+				7446F8B821A48D850086AC30 /* FloatExtension.swift */,
 				2BEA051D2177B5140058CA50 /* Unidad.swift */,
 				C30344FD21613F3200B3A22E /* AppDelegate.swift */,
 				741EED762194A72300ADB069 /* DimensionsViewController.swift */,
@@ -168,6 +171,7 @@
 				C30345102161404100B3A22E /* Conversion.swift in Sources */,
 				C303450021613F3200B3A22E /* ViewController.swift in Sources */,
 				741EED812194D33F00ADB069 /* DimensionCollectionViewCell.swift in Sources */,
+				7446F8B921A48D850086AC30 /* FloatExtension.swift in Sources */,
 				C30344FE21613F3200B3A22E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
