@@ -6,11 +6,6 @@
 //  Copyright © 2018 Administrator. All rights reserved.
 //  https://developer.apple.com/documentation/foundation/dimension
 
-// TODO: - TODO -
-// TODO: Add Scroll View to move content up when displaying keyboard hides content in smaller screens
-// TODO: OPTIONAL Make custom transition from DimensionSelection to UnitSelection
-// TODO: -
-
 import UIKit
 
 class ViewController: UIViewController {
@@ -88,7 +83,7 @@ class ViewController: UIViewController {
         for unit in selectedUnitList {
             let selectUnitAction = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
                 self.selectedOriginUnit = unit
-                self.selectOriginUnitButton.backgroundColor = UIColor(red: 67.0/255.0, green: 67.0/255.0, blue: 67.0/255.0, alpha: 1.0)
+                self.selectOriginUnitButton.backgroundColor = UIColor(red: 190.0/255.0, green: 210.0/255.0, blue: 217.0/255.0, alpha: 1.0)
                 self.selectOriginUnitButton.setTitle(unit.name, for: .normal)
                 if !self.requiresCompoundUnit {
                     self.animateHideLabel(self.originUnitHelperLabel, duration: 0.3)
@@ -120,7 +115,7 @@ class ViewController: UIViewController {
         for unit in unitList {
             let selectUnitAction = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
                 self.selectedOriginUnitDenominator = unit
-                self.selectOriginUnitDenominatorButton.backgroundColor = UIColor(red: 67.0/255.0, green: 67.0/255.0, blue: 67.0/255.0, alpha: 1.0)
+                self.selectOriginUnitDenominatorButton.backgroundColor = UIColor(red: 190.0/255.0, green: 210.0/255.0, blue: 217.0/255.0, alpha: 1.0)
                 self.selectOriginUnitDenominatorButton.setTitle(unit.name, for: .normal)
                 self.animateHideLabel(self.originUnitHelperLabel, duration: 0.3)
             }
@@ -140,7 +135,7 @@ class ViewController: UIViewController {
         for unit in selectedUnitList {
             let action = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
                 self.selectedDestinationUnit = unit
-                self.selectDestinationUnitButton.backgroundColor = UIColor(red: 67.0/255.0, green: 67.0/255.0, blue: 67.0/255.0, alpha: 1.0)
+                self.selectDestinationUnitButton.backgroundColor = UIColor(red: 190.0/255.0, green: 210.0/255.0, blue: 217.0/255.0, alpha: 1.0)
                 self.selectDestinationUnitButton.setTitle(unit.name, for: .normal)
                 if !self.requiresCompoundUnit {
                     self.animateHideLabel(self.destinationUnitHelperLabel, duration: 0.3)
@@ -172,7 +167,7 @@ class ViewController: UIViewController {
         for unit in unitList {
             let selectUnitAction = UIAlertAction.init(title: unit.name, style: .default) { (completed) in
                 self.selectedDestinationUnitDenominator = unit
-                self.selectDestinationUnitDenominatorButton.backgroundColor = UIColor(red: 67.0/255.0, green: 67.0/255.0, blue: 67.0/255.0, alpha: 1.0)
+                self.selectDestinationUnitDenominatorButton.backgroundColor = UIColor(red: 190.0/255.0, green: 210.0/255.0, blue: 217.0/255.0, alpha: 1.0)
                 self.selectDestinationUnitDenominatorButton.setTitle(unit.name, for: .normal)
                 self.animateHideLabel(self.destinationUnitHelperLabel, duration: 0.3)
             }
@@ -368,7 +363,7 @@ extension ViewController: UITextFieldDelegate {
         
         // Enable convert button and change color background
         convertButton.isEnabled = true
-        convertButton.backgroundColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+        convertButton.backgroundColor = UIColor(red: 9.0/255.0, green: 71.0/255.0, blue: 107.0/255.0, alpha: 1.0)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
