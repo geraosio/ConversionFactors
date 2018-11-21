@@ -6,27 +6,9 @@
 //  Copyright © 2018 Administrator. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-struct ConversionFactor {
-    var numeratorMagnitude: Float
-    var numeratorUnitName: String
-    var denominatorMagnitude: Float
-    var denominatorUnitName: String
-    
-    init(numeratorMagnitude: Float, numeratorUnitName: String, denominatorMagnitude: Float, denominatorUnitName: String) {
-        self.numeratorMagnitude = numeratorMagnitude
-        self.numeratorUnitName = numeratorUnitName
-        self.denominatorMagnitude = denominatorMagnitude
-        self.denominatorUnitName = denominatorUnitName
-    }
-    
-    func description() -> String {
-        return "\(numeratorMagnitude.formatted) \(numeratorUnitName) = \(denominatorMagnitude.formatted) \(denominatorUnitName)"
-    }
-}
-
-class ConversionStep: NSObject {
+class ConversionStep {
     
     // MARK: - Properties
     

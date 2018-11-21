@@ -6,9 +6,9 @@
 //  Copyright © 2018 Administrator. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Unidad: NSObject {
+class Unidad {
     
     // MARK: - Properties
     

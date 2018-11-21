@@ -6,7 +6,7 @@
 //  Copyright © 2018 Administrator. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class Conversion {
     
@@ -39,13 +39,25 @@ class Conversion {
             // STEPS
             // 1st Step
             // Construct the numerator conversion factor
-            let numeratorConversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: ceilf(Float(resultNumeratorMeasurement.value) / magnitude), numeratorUnitName: resultNumerator.name, denominatorMagnitude: ceilf(magnitude / Float(resultNumeratorMeasurement.value)), denominatorUnitName: initialNumerator.name)
+            var numeratorConversionFactorNumeratorMagnitude: Float = Float(resultNumeratorMeasurement.value) / magnitude
+            var numeratorConversionFactorDenominatorMagnitude: Float = magnitude / Float(resultNumeratorMeasurement.value)
+            
+            numeratorConversionFactorNumeratorMagnitude = numeratorConversionFactorNumeratorMagnitude < 1 ? 1 : numeratorConversionFactorNumeratorMagnitude
+            numeratorConversionFactorDenominatorMagnitude = numeratorConversionFactorDenominatorMagnitude < 1 ? 1 : numeratorConversionFactorDenominatorMagnitude
+            
+            let numeratorConversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: numeratorConversionFactorNumeratorMagnitude, numeratorUnitName: resultNumerator.name, denominatorMagnitude: numeratorConversionFactorDenominatorMagnitude, denominatorUnitName: initialNumerator.name)
             
             result.append(ConversionStep(magnitude: magnitude, numeratorName: initialNumerator.name, denominatorName: unwrappedInitialDenominator.name, conversionFactor: numeratorConversionFactor))
             
             // 2nd Step
             // Construct the denominator conversion factor
-            let denominatorConversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: Float(ceil(resultDenominatorMeasurement.value)), numeratorUnitName: unwrappedInitialDenominator.name, denominatorMagnitude: ceilf(1.0 / Float(resultDenominatorMeasurement.value)), denominatorUnitName: unwrappedResultDenominator.name)
+            var denominatorConversionFactorNumeratorMagnitude: Float = Float(resultDenominatorMeasurement.value)
+            var denominatorConversionFactorDenominatorMagnitude: Float = 1.0 / Float(resultDenominatorMeasurement.value)
+            
+            denominatorConversionFactorNumeratorMagnitude = denominatorConversionFactorNumeratorMagnitude < 1 ? 1 : denominatorConversionFactorNumeratorMagnitude
+            denominatorConversionFactorDenominatorMagnitude = denominatorConversionFactorDenominatorMagnitude < 1 ? 1 : denominatorConversionFactorDenominatorMagnitude
+            
+            let denominatorConversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: denominatorConversionFactorNumeratorMagnitude, numeratorUnitName: unwrappedInitialDenominator.name, denominatorMagnitude: denominatorConversionFactorDenominatorMagnitude, denominatorUnitName: unwrappedResultDenominator.name)
             
             result.append(ConversionStep(magnitude: Float(resultNumeratorMeasurement.value), numeratorName: resultNumerator.name, denominatorName: unwrappedInitialDenominator.name, conversionFactor: denominatorConversionFactor))
             
@@ -60,7 +72,13 @@ class Conversion {
             
             // 1st Step
             // Construct the conversion factor using the initial and result values
-            let conversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: ceilf(resultMeasurementValue / magnitude), numeratorUnitName: resultNumerator.name, denominatorMagnitude: ceilf(magnitude / resultMeasurementValue), denominatorUnitName: initialNumerator.name)
+            var conversionFactorNumeratorMagnitude: Float = resultMeasurementValue / magnitude
+            var conversionFactorDenominatorMagnitude: Float = magnitude / resultMeasurementValue
+            
+            conversionFactorNumeratorMagnitude = conversionFactorNumeratorMagnitude < 1 ? 1 : conversionFactorNumeratorMagnitude
+            conversionFactorDenominatorMagnitude = conversionFactorDenominatorMagnitude < 1 ? 1 : conversionFactorDenominatorMagnitude
+            
+            let conversionFactor: ConversionFactor = ConversionFactor(numeratorMagnitude: conversionFactorNumeratorMagnitude, numeratorUnitName: resultNumerator.name, denominatorMagnitude: conversionFactorDenominatorMagnitude, denominatorUnitName: initialNumerator.name)
             
             result.append(ConversionStep(magnitude: magnitude, numeratorName: initialNumerator.name, denominatorName: nil, conversionFactor: conversionFactor))
             
