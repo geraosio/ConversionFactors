@@ -259,31 +259,17 @@ class ViewController: UIViewController {
         let cornerRadiusValue: CGFloat = 8.0
         
         selectOriginUnitButton.layer.cornerRadius = cornerRadiusValue
-        selectOriginUnitButton.setTitle(selectedUnitList[0].name, for: .normal)
         selectDestinationUnitButton.layer.cornerRadius = cornerRadiusValue
-        selectDestinationUnitButton.setTitle(selectedUnitList[0].name, for: .normal)
         finishEnteringValueButton.layer.cornerRadius = cornerRadiusValue / 2
         convertButton.layer.cornerRadius = cornerRadiusValue
         
         if self.requiresCompoundUnit {
             
-            guard let unitList = complementaryUnitList else {
-                let errorAlert = UIAlertController(title: "Algo paso 😕", message: "Por favor intenta de nuevo seleccionando la dimension que deseas.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                errorAlert.addAction(okAction)
-                self.present(errorAlert, animated: true, completion: {
-                    self.navigationController?.popToRootViewController(animated: true)
-                })
-                return
-            }
-            
             selectOriginUnitDenominatorButton.isHidden = false
             selectOriginUnitDenominatorButton.layer.cornerRadius = cornerRadiusValue
-            selectOriginUnitDenominatorButton.setTitle(unitList[0].name, for: .normal)
             
             selectDestinationUnitDenominatorButton.isHidden = false
             selectDestinationUnitDenominatorButton.layer.cornerRadius = cornerRadiusValue
-            selectDestinationUnitDenominatorButton.setTitle(unitList[0].name, for: .normal)
         }
     }
     
