@@ -1,6 +1,8 @@
-# Unit Conversion iOS app
+# Conversion Factors iOS app
 
-<img src="readme-assets/logo.png">
+<p align="center">
+  <img src="readme-assets/logo.png" height="256px">
+</p>
 
 ## Background
 A physics professor at our university, Tec de Monterrey, teaches a physics
@@ -11,8 +13,8 @@ per hour to meters per second. He asked us to help him, through an app, show
 his students how to make each conversion.
 
 ## Screenshots
-<div>
+<p align="center">
   <img src="readme-assets/home.png" height="512px">
   <img src="readme-assets/units.png" height="512px">
   <img src="readme-assets/steps.png" height="512px">
-</div>
+</p>
