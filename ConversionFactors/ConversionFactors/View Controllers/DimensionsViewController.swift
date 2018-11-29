@@ -26,6 +26,8 @@ class DimensionsViewController: UIViewController {
         buttonsCollectionView.dataSource = self
         
         dimensions = ["area", "distancia", "peso", "tiempo", "velocidad", "volumen"]
+        
+        addCreditsBarButtonItem()
     }
     
     override func viewWillLayoutSubviews() {
@@ -38,29 +40,41 @@ class DimensionsViewController: UIViewController {
         buttonsCollectionViewFlowLayout.minimumLineSpacing = inset
     }
     
+    // MARK: - Actions
+    @IBAction func showAboutInformation(_ sender: Any) {
+        performSegue(withIdentifier: "showAbout", sender: self)
+    }
+    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let conversionView = segue.destination as? ViewController else {
-            fatalError("Could not cast UIViewController to ViewController")
-        }
-        
-        guard let tappedCell = sender as? DimensionCollectionViewCell else {
-            fatalError("Could not cast Any to DimensionCollectionViewCell")
-        }
-        
-        conversionView.selectedDimension = tappedCell.dimension.text?.lowercased()
-        
-        switch tappedCell.dimension.text {
-        case "Velocidad":
-            conversionView.requiresCompoundUnit = true
-        default:
-            conversionView.requiresCompoundUnit = false
+        if segue.identifier == "selectedDimension" {
+            guard let conversionView = segue.destination as? ViewController else {
+                fatalError("Could not cast UIViewController to ViewController")
+            }
+            
+            guard let tappedCell = sender as? DimensionCollectionViewCell else {
+                fatalError("Could not cast Any to DimensionCollectionViewCell")
+            }
+            
+            conversionView.selectedDimension = tappedCell.dimension.text?.lowercased()
+            
+            switch tappedCell.dimension.text {
+            case "Velocidad":
+                conversionView.requiresCompoundUnit = true
+            default:
+                conversionView.requiresCompoundUnit = false
+            }
         }
     }
     
     // MARK: - Private Methods
-
+    func addCreditsBarButtonItem() {
+        let infoButton = UIButton(type: .infoLight)
+        infoButton.addTarget(self, action: #selector(showAboutInformation(_:)), for: .touchUpInside)
+        let infoBarButton = UIBarButtonItem(customView: infoButton)
+        self.navigationItem.rightBarButtonItem = infoBarButton
+    }
 }
 
 // MARK: - Collection View Data Source
