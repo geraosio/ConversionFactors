@@ -35,7 +35,7 @@ class AboutViewController: UIViewController {
     
     func loadTextView() {
         
-        let creditsText = "Factores de Conversión se distribuye como está de manera gratuita y se prohíbe su distribución y uso con fines de lucro." + "\n\n" + "Creado por: @edlgg y @geraosio"
+        let creditsText = NSLocalizedString("Conversion Factors is distributed as is for free. It's distribution and use for profit is prohibited.\n\nCreated by @edlgg and @geraosio.", comment: "License text")
         let creditsAttributedString = NSMutableAttributedString(string: creditsText)
         
         // Add hyperlink to Github profile page

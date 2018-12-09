@@ -1,6 +1,6 @@
 //
 //  DimensionsViewController.swift
-//  Unit Conversion
+//  ConversionFactors
 //
 //  Created by Gerardo Osio on 11/8/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -16,7 +16,7 @@ class DimensionsViewController: UIViewController {
     
     @IBOutlet weak var buttonsCollectionView: UICollectionView!
     @IBOutlet weak var buttonsCollectionViewFlowLayout: UICollectionViewFlowLayout!
-    var dimensions: [String]!
+    var dimensionNames: [DimensionName]!
     
     // MARK: - View Lifecycle Methods
 
@@ -25,7 +25,8 @@ class DimensionsViewController: UIViewController {
         
         buttonsCollectionView.dataSource = self
         
-        dimensions = ["area", "distancia", "peso", "tiempo", "velocidad", "volumen"]
+        // Get all dimension names from DimensionName to identify the selected DimensionName from the indexPath
+        dimensionNames = DimensionName.allCases
         
         addCreditsBarButtonItem()
     }
@@ -46,24 +47,29 @@ class DimensionsViewController: UIViewController {
     }
     
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectedDimension" {
-            guard let conversionView = segue.destination as? ViewController else {
-                fatalError("Could not cast UIViewController to ViewController")
+            guard let conversionView = segue.destination as? UnitSelectionViewController else {
+                fatalError("Could not cast UIViewController to UnitSelectionViewController")
             }
             
             guard let tappedCell = sender as? DimensionCollectionViewCell else {
                 fatalError("Could not cast Any to DimensionCollectionViewCell")
             }
             
-            conversionView.selectedDimension = tappedCell.dimension.text?.lowercased()
-            
-            switch tappedCell.dimension.text {
-            case "Velocidad":
-                conversionView.requiresCompoundUnit = true
-            default:
-                conversionView.requiresCompoundUnit = false
+            if let tappedCellDimensionName = tappedCell.dimensionName {
+                
+                // Set the navigation bar title to the localized dimension
+                conversionView.title = tappedCell.dimension.text
+                
+                conversionView.selectedDimension = tappedCellDimensionName
+                
+                switch tappedCellDimensionName {
+                case .speed:
+                    conversionView.requiresCompoundUnit = true
+                default:
+                    conversionView.requiresCompoundUnit = false
+                }
             }
         }
     }
@@ -75,6 +81,7 @@ class DimensionsViewController: UIViewController {
         let infoBarButton = UIBarButtonItem(customView: infoButton)
         self.navigationItem.rightBarButtonItem = infoBarButton
     }
+    
 }
 
 // MARK: - Collection View Data Source
@@ -86,13 +93,13 @@ extension DimensionsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dimensions.count
+        return dimensionNames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DimensionCollectionViewCell
         
-        cell.dimension.text = dimensions[indexPath.row].capitalized
+        cell.dimensionName = dimensionNames[indexPath.row]
         cell.layer.cornerRadius = 16.0
         
         return cell

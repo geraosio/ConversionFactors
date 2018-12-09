@@ -1,6 +1,6 @@
 //
 //  Conversion.swift
-//  Unit Conversion
+//  ConversionFactors
 //
 //  Created by Administrator on 9/30/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -18,7 +18,7 @@ class Conversion {
         return Static.instance
     }
     
-    func convert(magnitude: Float, initialNumerator: Unidad, initialDenominator: Unidad?, resultNumerator: Unidad, resultDenominator: Unidad?) -> [ConversionStep] {
+    func convert(magnitude: Float, initialNumerator: UnitWrapper, initialDenominator: UnitWrapper?, resultNumerator: UnitWrapper, resultDenominator: UnitWrapper?) -> [ConversionStep] {
         
         var result = [ConversionStep]()
         

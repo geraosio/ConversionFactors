@@ -1,0 +1,51 @@
+
+/* Class = "UIButton"; normalTitle = "Close"; ObjectID = "2V5-7k-Vek"; */
+"2V5-7k-Vek.normalTitle" = "Cerrar";
+
+/* Class = "UIButton"; normalTitle = "Convert"; ObjectID = "5B6-14-xPh"; */
+"5B6-14-xPh.normalTitle" = "Convertir";
+
+/* Class = "UITextView"; text = "Credits Text"; ObjectID = "7Pu-2f-i9i"; */
+"7Pu-2f-i9i.text" = "Text de creditos";
+
+/* Class = "UITextField"; placeholder = "20.46"; ObjectID = "9cA-C2-xNh"; */
+"9cA-C2-xNh.placeholder" = "20.46";
+
+/* Class = "UIButton"; normalTitle = "u"; ObjectID = "Ayr-ZB-6wO"; */
+"Ayr-ZB-6wO.normalTitle" = "u";
+
+/* Class = "UIButton"; normalTitle = "u"; ObjectID = "Fbm-Wy-Wv9"; */
+"Fbm-Wy-Wv9.normalTitle" = "u";
+
+/* Class = "UILabel"; text = "Select origin unit"; ObjectID = "Fjw-Bm-Eui"; */
+"Fjw-Bm-Eui.text" = "Selecciona la unidad de origen";
+
+/* Class = "UILabel"; text = "u to u"; ObjectID = "FuZ-hk-z9f"; */
+"FuZ-hk-z9f.text" = "u a u";
+
+/* Class = "UILabel"; text = "Conversion"; ObjectID = "HNH-8b-ZJi"; */
+"HNH-8b-ZJi.text" = "Conversión";
+
+/* Class = "UILabel"; text = "Enter the value to convert"; ObjectID = "NCv-Vx-YDq"; */
+"NCv-Vx-YDq.text" = "Ingresa el valor a convertir";
+
+/* Class = "UILabel"; text = "select desired unit"; ObjectID = "OWY-A7-9JE"; */
+"OWY-A7-9JE.text" = "Selecciona la unidad de destino";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "P2t-w9-1Vl"; */
+"P2t-w9-1Vl.normalTitle" = "Listo";
+
+/* Class = "UIButton"; normalTitle = "u"; ObjectID = "T7x-vY-YrP"; */
+"T7x-vY-YrP.normalTitle" = "u";
+
+/* Class = "UIButton"; normalTitle = "Close"; ObjectID = "YQe-aR-Of8"; */
+"YQe-aR-Of8.normalTitle" = "Cerrar";
+
+/* Class = "UINavigationItem"; title = "Dimensions"; ObjectID = "kmK-QF-UNV"; */
+"kmK-QF-UNV.title" = "Dimensiones";
+
+/* Class = "UIButton"; normalTitle = "u"; ObjectID = "o7d-6h-v7s"; */
+"o7d-6h-v7s.normalTitle" = "u";
+
+/* Class = "UILabel"; text = "Dimension"; ObjectID = "rDR-WJ-nAI"; */
+"rDR-WJ-nAI.text" = "Dimensión";

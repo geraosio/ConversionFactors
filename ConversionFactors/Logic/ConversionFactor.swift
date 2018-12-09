@@ -1,6 +1,6 @@
 //
 //  ConversionFactor.swift
-//  Unit Conversion
+//  ConversionFactors
 //
 //  Created by Gerardo Osio on 11/21/18.
 //  Copyright © 2018 Administrator. All rights reserved.

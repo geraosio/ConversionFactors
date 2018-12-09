@@ -1,6 +1,6 @@
 //
-//  ViewController.swift
-//  Unit Conversion
+//  UnitSelectionViewController.swift
+//  ConversionFactors
 //
 //  Created by Administrator on 9/30/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class UnitSelectionViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -28,16 +28,16 @@ class ViewController: UIViewController {
     // Scroll View
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var selectedDimension: String!
+    var selectedDimension: DimensionName!
     var requiresCompoundUnit: Bool!
     // Unit Lists
-    var selectedUnitList: [Unidad]!
-    var complementaryUnitList: [Unidad]? // For compound units
+    var selectedUnitList: [UnitWrapper]!
+    var complementaryUnitList: [UnitWrapper]? // For compound units
     // Selected Units
-    var selectedOriginUnit: Unidad?
-    var selectedOriginUnitDenominator: Unidad?
-    var selectedDestinationUnit: Unidad?
-    var selectedDestinationUnitDenominator: Unidad?
+    var selectedOriginUnit: UnitWrapper?
+    var selectedOriginUnitDenominator: UnitWrapper?
+    var selectedDestinationUnit: UnitWrapper?
+    var selectedDestinationUnitDenominator: UnitWrapper?
     // Conversion Steps
     var results = [ConversionStep]()
     
@@ -49,22 +49,19 @@ class ViewController: UIViewController {
         // Make View Controller as the value text field delegate
         valueTextField.delegate = self
         
-        // Set NavigationBarTitle to the selected dimension
-        self.title = selectedDimension.capitalized
-        
         // Set the selected unit list
-        selectedUnitList = getUnitListFor(selectedDimension)
+        selectedUnitList = DimensionList(dimensionName: selectedDimension).list
         
         // Set complementary list if dimension requires a compound unit
         if requiresCompoundUnit {
-            complementaryUnitList = getUnitListFor("tiempo")
+            complementaryUnitList = DimensionList(dimensionName: .time).list
         }
         
         // Move content up if keyboard hides content
         registerForKeyboardNotification()
         
         // Dismiss keyboard when tapping outside of it
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UnitSelectionViewController.dismissKeyboard))
         self.view.addGestureRecognizer(tap)
         
         // Setup the view's elements
@@ -75,9 +72,12 @@ class ViewController: UIViewController {
     
     @IBAction func selectOriginUnit(_ sender: Any) {
         
-        let alertController = UIAlertController.init(title: "Seleccionar unidad de origen", message: nil, preferredStyle: .actionSheet)
+        let alertControlText = NSLocalizedString("Select origin unit", comment: "To select the unit in a menu")
+        let cancelText = NSLocalizedString("Cancel", comment: "To close a menu")
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let alertController = UIAlertController.init(title: alertControlText, message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         for unit in selectedUnitList {
@@ -97,13 +97,19 @@ class ViewController: UIViewController {
     
     @IBAction func selectOriginUnitDenominator(_ sender: Any) {
         
-        let alertController = UIAlertController.init(title: "Seleccionar el denominador de la unidad de origen", message: nil, preferredStyle: .actionSheet)
+        let alertControlText = NSLocalizedString("Select the denominator of the origin unit", comment: "To select the unit in a menu")
+        let cancelText = NSLocalizedString("Cancel", comment: "To close a menu")
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let alertController = UIAlertController.init(title: alertControlText, message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         guard let unitList = complementaryUnitList else {
-            let errorAlert = UIAlertController(title: "Algo paso 😕", message: "Por favor intenta de nuevo seleccionando la dimension que deseas.", preferredStyle: .alert)
+            let errorTitleText = NSLocalizedString("Something happened 😕", comment: "Error title text")
+            let errorMessageText = NSLocalizedString("Please try again selecting the dimension you want to make conversions of", comment: "Error message text")
+            
+            let errorAlert = UIAlertController(title: errorTitleText, message: errorMessageText, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             errorAlert.addAction(okAction)
             self.present(errorAlert, animated: true, completion: {
@@ -127,9 +133,12 @@ class ViewController: UIViewController {
     
     @IBAction func selectDestinationUnit(_ sender: Any) {
         
-        let alertController = UIAlertController.init(title: "Seleccionar unidad destino", message: nil, preferredStyle: .actionSheet)
+        let alertControlText = NSLocalizedString("Select destiny unit", comment: "To select the unit in a menu")
+        let cancelText = NSLocalizedString("Cancel", comment: "To close a menu")
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let alertController = UIAlertController.init(title: alertControlText, message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         for unit in selectedUnitList {
@@ -149,13 +158,19 @@ class ViewController: UIViewController {
     
     @IBAction func selectDestinationUnitDenominator(_ sender: Any) {
         
-        let alertController = UIAlertController.init(title: "Seleccionar el denominador de la unidad de origen", message: nil, preferredStyle: .actionSheet)
+        let alertControlText = NSLocalizedString("Select the denominator of the destiny unit", comment: "To select the unit in a menu")
+        let cancelText = NSLocalizedString("Cancel", comment: "To close a menu")
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let alertController = UIAlertController.init(title: alertControlText, message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         guard let unitList = complementaryUnitList else {
-            let errorAlert = UIAlertController(title: "Algo paso 😕", message: "Por favor intenta de nuevo seleccionando la dimension que deseas.", preferredStyle: .alert)
+            let errorTitleText = NSLocalizedString("Something happened 😕", comment: "Error title text")
+            let errorMessageText = NSLocalizedString("Please try again selecting the dimension you want to make conversions of", comment: "Error message text")
+            
+            let errorAlert = UIAlertController(title: errorTitleText, message: errorMessageText, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             errorAlert.addAction(okAction)
             self.present(errorAlert, animated: true, completion: {
@@ -191,7 +206,10 @@ class ViewController: UIViewController {
                 
                 results = Conversion.sharedManager.convert(magnitude: inputValue, initialNumerator: originUnit, initialDenominator: selectedOriginUnitDenominator, resultNumerator: destinationUnit, resultDenominator: selectedDestinationUnitDenominator)
             } else {
-                let alertController = UIAlertController(title: "Falto ingresar un dato", message: "Para obtener un resultado asegurate de haber seleccionado la unidad origen, la unidad destino e ingresado un valor.", preferredStyle: .alert)
+                let alertTitleText = NSLocalizedString("Data is missing", comment: "Alert title text")
+                let alertMessageText = NSLocalizedString("To convert the units you must have selected the origin unit, the destiny unit and entered a value.", comment: "Alert message text")
+                
+                let alertController = UIAlertController(title: alertTitleText, message: alertMessageText, preferredStyle: .alert)
                 
                 let okAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(okAction)
@@ -207,13 +225,15 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let stepView = segue.destination as? StepsViewController {
             stepView.results = results
-            stepView.titleLabelText = "Conversión"
+            stepView.titleLabelText = NSLocalizedString("Conversion", comment: "Physics conversion of units")
+            
+            let unitToUnitSeparationText = NSLocalizedString("to", comment: "Example of use: km to mi")
             
             if let originUnitDenominatorName = selectedOriginUnitDenominator?.name,
                 let destinationUnitDenominatorName = selectedDestinationUnitDenominator?.name {
-                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "")/\(originUnitDenominatorName) a \(selectedDestinationUnit?.name ?? "")/\(destinationUnitDenominatorName)"
+                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "")/\(originUnitDenominatorName) \(unitToUnitSeparationText) \(selectedDestinationUnit?.name ?? "")/\(destinationUnitDenominatorName)"
             } else {
-                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "") a \(selectedDestinationUnit?.name ?? "")"
+                stepView.unitsTitleLabelText = "\(selectedOriginUnit?.name ?? "") \(unitToUnitSeparationText) \(selectedDestinationUnit?.name ?? "")"
             }
         }
     }
@@ -273,69 +293,11 @@ class ViewController: UIViewController {
         }
     }
     
-    private func getUnitListFor(_ unitListName: String) -> [Unidad] {
-        
-        // Initialize lists
-        let areaList = [ Unidad(type: UnitArea.squareMeters, name: "m\u{00B2}", coefficient: 1, baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareKilometers, name: "km\u{00B2}", coefficient: 1000000,baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareCentimeters, name: "cm\u{00B2}", coefficient: 0.0001, baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareMillimeters, name: "mm\u{00B2}", coefficient: 0.000001, baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareInches, name: "in\u{00B2}", coefficient: 0.00064516, baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareFeet, name: "ft\u{00B2}", coefficient: 0.092903, baseUnitName: "m\u{00B2}"),
-                         Unidad(type: UnitArea.squareYards, name: "yd\u{00B2}", coefficient: 0.836127, baseUnitName: "m\u{00B2}")]
-        
-        let lengthList = [ Unidad(type: UnitLength.meters, name: "m", coefficient: 1, baseUnitName: "m"),
-                       Unidad(type: UnitLength.kilometers, name: "km", coefficient: 1000, baseUnitName: "m"),
-                       Unidad(type: UnitLength.centimeters, name: "cm", coefficient: 0.01, baseUnitName: "m"),
-                       Unidad(type: UnitLength.millimeters, name: "mm", coefficient: 0.001, baseUnitName: "m"),
-                       Unidad(type: UnitLength.inches, name: "in", coefficient: 0.0254, baseUnitName: "m"),
-                       Unidad(type: UnitLength.feet, name: "ft", coefficient: 0.3048, baseUnitName: "m"),
-                       Unidad(type: UnitLength.yards, name: "yd", coefficient: 0.9144, baseUnitName: "m"),
-                       Unidad(type: UnitLength.miles, name: "mi", coefficient: 1609.34, baseUnitName: "m"),
-                       Unidad(type: UnitLength.lightyears, name: "ly", coefficient: 9461000000000000, baseUnitName: "m")]
-        
-        let timeList = [ Unidad(type: UnitDuration.seconds, name: "s", coefficient: 1, baseUnitName: "s"),
-                         Unidad(type: UnitDuration.minutes, name: "min", coefficient: 60, baseUnitName: "s"),
-                         Unidad(type: UnitDuration.hours, name: "hr", coefficient: 3600, baseUnitName: "s")]
-        
-        let volumeList = [Unidad(type: UnitVolume.liters, name: "L", coefficient: 1, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.deciliters, name: "dL", coefficient: 0.1, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.centiliters, name: "cL", coefficient: 0.01, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.milliliters, name: "mL", coefficient: 0.001, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.cubicKilometers, name: "km\u{00B3}", coefficient: 1000000000000, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.cubicMeters, name: "m\u{00B3}", coefficient: 1000, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.cubicMillimeters, name: "mm\u{00B3}", coefficient: 0.000001, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.cubicInches, name: "in\u{00B3}", coefficient: 0.0163871, baseUnitName: "L"),
-                          Unidad(type: UnitVolume.cubicFeet, name: "ft\u{00B3}", coefficient: 28.3168, baseUnitName: "L")]
-        
-        let weightList = [Unidad(type: UnitMass.kilograms, name: "kg", coefficient: 1, baseUnitName: "kg"),
-                    Unidad(type: UnitMass.grams, name: "g", coefficient: 0.001, baseUnitName: "kg"),
-                    Unidad(type: UnitMass.centigrams, name: "cg", coefficient: 0.00001, baseUnitName: "kg"),
-                    Unidad(type: UnitMass.milligrams, name: "mg", coefficient: 0.000001, baseUnitName: "kg"),
-                    Unidad(type: UnitMass.ounces, name: "oz", coefficient: 0.0283495, baseUnitName: "kg"),
-                    Unidad(type: UnitMass.pounds, name: "lb", coefficient: 0.453592, baseUnitName: "kg")]
-        
-        switch unitListName {
-        case "area":
-            return areaList
-        case "distancia":
-            return lengthList
-        case "peso":
-            return weightList
-        case "tiempo":
-            return timeList
-        case "volumen":
-            return volumeList
-        default:
-            return lengthList
-        }
-    }
-    
 }
 
 // MARK: - Text Field Delegate
 
-extension ViewController: UITextFieldDelegate {
+extension UnitSelectionViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         

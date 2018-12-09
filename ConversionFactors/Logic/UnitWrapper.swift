@@ -1,6 +1,6 @@
 //
-//  Unidad.swift
-//  Unit Conversion
+//  UnitWrapper.swift
+//  ConversionFactors
 //
 //  Created by Eduardo de la Garza on 10/17/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Unidad {
+class UnitWrapper {
     
     // MARK: - Properties
     

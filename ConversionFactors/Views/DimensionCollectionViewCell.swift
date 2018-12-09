@@ -1,6 +1,6 @@
 //
 //  DimensionCollectionViewCell.swift
-//  Unit Conversion
+//  ConversionFactors
 //
 //  Created by Gerardo Osio on 11/8/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -12,4 +12,9 @@ class DimensionCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     @IBOutlet weak var dimension: UILabel!
+    var dimensionName: DimensionName! {
+        didSet {
+            self.dimension.text = NSLocalizedString(dimensionName.rawValue.capitalized, comment: "Physics dimension name")
+        }
+    }
 }

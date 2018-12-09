@@ -1,6 +1,6 @@
 //
 //  StepsViewController.swift
-//  Unit Conversion
+//  ConversionFactors
 //
 //  Created by Gerardo Osio on 11/15/18.
 //  Copyright © 2018 Administrator. All rights reserved.
@@ -27,7 +27,7 @@ class StepsViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Change title to dimension
+        // Change title
         titleLabel.text = titleLabelText.capitalized
         unitsTitleLabel.text = unitsTitleLabelText
         
@@ -78,7 +78,8 @@ class StepsViewController: UIViewController, UIScrollViewDelegate {
             let step: Step = Bundle.main.loadNibNamed("Step", owner: self, options: nil)?.first as! Step
             
             // Set the step number
-            step.stepTitleLabel.text = "Paso \(i + 1)"
+            let stepText = NSLocalizedString("Step", comment: "To describe the step number of the conversion")
+            step.stepTitleLabel.text = "\(stepText) \(i + 1)"
             
             // Show the conversion factor title, multiplication sign and stack view if present, hide if not
             if let stepConversionFactor = results[i].conversionFactor {
