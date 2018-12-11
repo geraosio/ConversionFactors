@@ -28,6 +28,11 @@ class DimensionsViewController: UIViewController {
         // Get all dimension names from DimensionName to identify the selected DimensionName from the indexPath
         dimensionNames = DimensionName.allCases
         
+        // Sort dimensions names by the localized name
+        dimensionNames.sort { (dimensionNameLeft, dimensionNameRight) -> Bool in
+            dimensionNameLeft.localizedString() < dimensionNameRight.localizedString()
+        }
+        
         addCreditsBarButtonItem()
     }
     

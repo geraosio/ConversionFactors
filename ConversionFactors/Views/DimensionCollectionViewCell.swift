@@ -14,7 +14,7 @@ class DimensionCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dimension: UILabel!
     var dimensionName: DimensionName! {
         didSet {
-            self.dimension.text = NSLocalizedString(dimensionName.rawValue.capitalized, comment: "Physics dimension name")
+            self.dimension.text = dimensionName.localizedString().capitalized
         }
     }
 }

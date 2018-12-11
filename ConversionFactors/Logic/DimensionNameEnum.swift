@@ -15,4 +15,8 @@ enum DimensionName: String, CaseIterable {
     case speed
     case time
     case volume
+    
+    func localizedString() -> String {
+        return NSLocalizedString(self.rawValue, comment: "Physics dimension name")
+    }
 }
