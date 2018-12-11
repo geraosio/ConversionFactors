@@ -35,7 +35,7 @@ class AboutViewController: UIViewController {
     
     func loadTextView() {
         
-        let creditsText = NSLocalizedString("Conversion Factors is distributed as is for free. It's distribution and use for profit is prohibited.\n\nCreated by @edlgg and @geraosio.", comment: "License text")
+        let creditsText = NSLocalizedString("Conversion Factors is distributed as is for free. It's distribution and use for profit is prohibited. To learn more tap here.\n\nCreated by @edlgg and @geraosio.", comment: "License text")
         let creditsAttributedString = NSMutableAttributedString(string: creditsText)
         
         // Add hyperlink to Github profile page
@@ -50,6 +50,13 @@ class AboutViewController: UIViewController {
             let location = range.lowerBound.encodedOffset
             let length = range.upperBound.encodedOffset - location
             creditsAttributedString.addAttribute(.link, value: "https://github.com/geraosio", range: NSRange(location: location, length: length))
+        }
+        
+        // Add hyperlink to Privacy Policy
+        if let range = creditsText.range(of: NSLocalizedString("tap here", comment: "To open the Privacy Policy website in Safari")) {
+            let location = range.lowerBound.encodedOffset
+            let length = range.upperBound.encodedOffset - location
+            creditsAttributedString.addAttribute(.link, value: "https://geraosio.github.io/ConversionFactors/", range: NSRange(location: location, length: length))
         }
         
         creditsTextView.attributedText = creditsAttributedString
