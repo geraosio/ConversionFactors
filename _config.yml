@@ -1,2 +1,11 @@
+# SEO
+title: Conversion Factors iOS app
+description: Step by step unit conversion iOS app.
+author:
+  twitter: geraosio
+twitter: geraosio
+logo: '/img/icon_background.png'
+
+# Stylesheets
 sass:
   style: compact # nested expand compact compressed
