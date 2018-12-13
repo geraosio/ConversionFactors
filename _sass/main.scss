@@ -1,4 +1,21 @@
 /*
+ * Globals
+ */
+
+ // Headings
+h1 {
+  font-weight: bold;
+}
+
+// Links
+a,
+a:focus,
+a:hover {
+  color: $grey;
+}
+
+
+/*
  * Base structure
  */
 
@@ -14,6 +31,11 @@ body {
   color: $dark-blue;
 }
 
+body, input, textarea, select, button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .mastcontainer {
   display: -ms-flexbox;
   display: flex;
@@ -27,26 +49,21 @@ body {
   width: 100%;
 }
 
-/* Links */
-a,
-a:focus,
-a:hover {
-  color: $grey;
-}
-
 
 /*
  * Header
  */
 .masthead {
-  margin-bottom: 2rem;
+  margin-bottom: auto;
 
-  .masthead-brand {
-    margin-bottom: 0;
+  .masthead-image {
+    height: 80px;
   }
 }
 
 .nav-masthead {
+  justify-content: center;
+
   .nav-link {
     padding: .25rem 0;
     font-weight: 700;
@@ -71,8 +88,9 @@ a:hover {
 }
 
 @media (min-width: 48em) {
-  .masthead-brand {
+  .masthead-image {
     float: left;
+    height: 48px !important;
   }
   .nav-masthead {
     float: right;

@@ -1,5 +1,5 @@
-<nav class="nav nav-masthead justify-content-center">
+<nav class="nav nav-masthead">
   {% for item in site.data.navigation %}
-    <a class="nav-link {% if item.url == page.url %}active{% endif %}" href="{{ item.url }}">{{ item.title }}</a>
+    <a class="nav-link {% if item.url == page.url %}active{% endif %}" href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
   {% endfor %}
 </nav>
