@@ -1,9 +1,8 @@
-urls:
 - title: Home
   url: /
 
-- title: Privact
+- title: Privacy
   url: /privacy.html
-  
+
 - title: Support
   url: /support.html

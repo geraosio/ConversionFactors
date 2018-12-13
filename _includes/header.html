@@ -1,10 +1,6 @@
 <header class="masthead mb-auto">
   <div class="inner">
     {% unless page.url == '/' %}<h3 class="masthead-brand">Conversion Factors</h3>{% endunless %}
-    <nav class="nav nav-masthead justify-content-center">
-      <a class="nav-link {% if page.url == '/' %}active{% endif %}" href="{{ "/" }}">Home</a>
-      <a class="nav-link {% if page.url == '/privacy.html' %}active{% endif %}" href="/privacy.html">Privacy</a>
-      <a class="nav-link {% if page.url == '/support.html' %}active{% endif %}" href="/support.html">Support</a>
-    </nav>
+    {% include navigation.html %}
   </div>
 </header>
