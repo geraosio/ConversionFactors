@@ -1,0 +1,9 @@
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: $light-grey;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: $dark-blue;
+  border: .05rem solid $dark-blue;
+}

@@ -1,4 +1,11 @@
 ---
 # Required to compile .scss
 ---
+// Globals
+@import "colors";
+
+// Components
+@import "buttons";
+
+// Pages
 @import "main";
