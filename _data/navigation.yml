@@ -1,5 +1,8 @@
-# - title: Home
-#   url: /
+- title: Home
+  url: /
+
+- title: Legal
+  url: /legal.html
 
 - title: Privacy
   url: /privacy.html
