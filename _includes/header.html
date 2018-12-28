@@ -1,4 +1,12 @@
 <header class="masthead">
-  <a href="{{ '/' | absolute_url }}"><img src="{{ '/img/icon_transparent.png' | relative_url }}" alt="Conversion Factors" class="masthead-image mb-2"></a>
-  {% include navigation.html %}
+  <a href="{{ '/' | absolute_url }}">
+    <img src="{{ '/img/icon_transparent.png' | relative_url }}" alt="Conversion Factors" class="masthead-image mb-2">
+  </a>
+  <nav class="nav nav-masthead">
+    {% for item in site.data.navigation.header %}
+      <a href="{{ item.url | prepend: site.baseurl }}" class="nav-link {% if item.url == page.url %}active{% endif %}">
+        {{ item.title }}
+      </a>
+    {% endfor %}
+  </nav>
 </header>

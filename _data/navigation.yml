@@ -1,11 +1,15 @@
+header:
+
 - title: Home
   url: /
+
+- title: Support
+  url: /support.html
+
+footer:
 
 - title: Legal
   url: /legal.html
 
 - title: Privacy
   url: /privacy.html
-
-- title: Support
-  url: /support.html

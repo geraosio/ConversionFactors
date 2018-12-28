@@ -1,3 +1,10 @@
 <footer class="mastfoot mt-auto">
-  <p>Conversion Factors</p>
+  <span class="mastfoot-copy">Conversion Factors</span>
+  <div class="nav-mastfoot">
+    {% for item in site.data.navigation.footer %}
+      <a href="{{ item.url | prepend: site.baseurl }}" class="nav-mastfoot-link">
+        {{ item.title }}
+      </a>
+    {% endfor %}
+  </div>
 </footer>
